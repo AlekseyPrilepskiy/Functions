@@ -7,36 +7,38 @@ internal class Program
         int healthPositionX = 0;
         int healthPositionY = 0;
 
+        string nameHealth = " HP";
+
         int maxMana = 10;
         int currentMana = 7;
         int manaPositionX = 0;
         int manaPositionY = 1;
 
+        string nameMana = " MP";
+
         ConsoleColor healthColor = ConsoleColor.Green;
         ConsoleColor manaColor = ConsoleColor.DarkBlue;
 
-        Console.SetCursorPosition(healthPositionX, healthPositionY);
-        DrawBar(maxHealth, currentHealth, healthColor);
-        Console.Write(" HP");
+        DrawBar(maxHealth, currentHealth, healthPositionX, healthPositionY, nameHealth, healthColor);
 
-        Console.SetCursorPosition(manaPositionX, manaPositionY);
-        DrawBar(maxMana, currentMana, manaColor);
-        Console.Write(" MP");
+        DrawBar(maxMana, currentMana, manaPositionX, manaPositionY, nameMana, manaColor);
     }
 
-    private static void DrawBar(int maxResource, int currentResource, ConsoleColor barColor)
+    private static void DrawBar(int maxResource, int currentResource, int positionX, int positionY, string name, ConsoleColor barColor)
     {
+        Console.SetCursorPosition(positionX, positionY);
+
         Console.Write("[");
+
+        ConsoleColor defaultColor = Console.BackgroundColor;
+        Console.BackgroundColor = barColor;
 
         for (int i = 0; i < currentResource; i++)
         {
-            ConsoleColor defaultColor = Console.BackgroundColor;
-            Console.BackgroundColor = barColor;
-
             Console.Write(' ');
-
-            Console.BackgroundColor = defaultColor;
         }
+
+        Console.BackgroundColor = defaultColor;
 
         for (int j = currentResource; j < maxResource; j++)
         {
@@ -44,5 +46,6 @@ internal class Program
         }
 
         Console.Write("]");
+        Console.Write(name);
     }
 }
