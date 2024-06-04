@@ -1,0 +1,28 @@
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        InputNumber();
+    }
+
+    private static void InputNumber()
+    {
+        Console.Write("Введите число: ");
+
+        int number = 0;
+
+        bool isNumber = false;
+
+        while (isNumber == false)
+        {
+            isNumber = int.TryParse(Console.ReadLine(), out number);
+
+            if (isNumber == false)
+            {
+                Console.WriteLine("Ошибка ввода! Попробуйте ещё.");
+            }
+        }
+
+        Console.WriteLine($"Ваше число: {number}");
+    }
+}
