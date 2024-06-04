@@ -2,27 +2,20 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        InputNumber();
+        Console.WriteLine($"Ваше число: {ReadInt()}");
     }
 
-    private static void InputNumber()
+    private static int ReadInt()
     {
+        int number;
+
         Console.Write("Введите число: ");
 
-        int number = 0;
-
-        bool isNumber = false;
-
-        while (isNumber == false)
+        while (int.TryParse(Console.ReadLine(), out number) == false)
         {
-            isNumber = int.TryParse(Console.ReadLine(), out number);
-
-            if (isNumber == false)
-            {
                 Console.WriteLine("Ошибка ввода! Попробуйте ещё.");
-            }
         }
 
-        Console.WriteLine($"Ваше число: {number}");
+        return number;
     }
 }
