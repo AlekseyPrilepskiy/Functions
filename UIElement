@@ -1,0 +1,48 @@
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        int maxHealth = 10;
+        int currentHealth = 3;
+        int healthPositionX = 0;
+        int healthPositionY = 0;
+
+        int maxMana = 10;
+        int currentMana = 7;
+        int manaPositionX = 0;
+        int manaPositionY = 1;
+
+        ConsoleColor healthColor = ConsoleColor.Green;
+        ConsoleColor manaColor = ConsoleColor.DarkBlue;
+
+        Console.SetCursorPosition(healthPositionX, healthPositionY);
+        DrawBar(maxHealth, currentHealth, healthColor);
+        Console.Write(" HP");
+
+        Console.SetCursorPosition(manaPositionX, manaPositionY);
+        DrawBar(maxMana, currentMana, manaColor);
+        Console.Write(" MP");
+    }
+
+    private static void DrawBar(int maxResource, int currentResource, ConsoleColor barColor)
+    {
+        Console.Write("[");
+
+        for (int i = 0; i < currentResource; i++)
+        {
+            ConsoleColor defaultColor = Console.BackgroundColor;
+            Console.BackgroundColor = barColor;
+
+            Console.Write(' ');
+
+            Console.BackgroundColor = defaultColor;
+        }
+
+        for (int j = currentResource; j < maxResource; j++)
+        {
+            Console.Write(' ');
+        }
+
+        Console.Write("]");
+    }
+}
