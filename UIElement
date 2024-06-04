@@ -2,30 +2,39 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        int maxHealth = 10;
-        int currentHealth = 3;
+        int maxHealth = 20;
         int healthPositionX = 0;
-        int healthPositionY = 0;
+        int healthPositionY = 1;
 
         string nameHealth = " HP";
 
-        int maxMana = 10;
-        int currentMana = 7;
+        int maxMana = 20;
         int manaPositionX = 0;
-        int manaPositionY = 1;
+        int manaPositionY = 3;
 
-        string nameMana = " MP";
+        string nameMana = " Mана";
 
         ConsoleColor healthColor = ConsoleColor.Green;
         ConsoleColor manaColor = ConsoleColor.DarkBlue;
 
-        DrawBar(maxHealth, currentHealth, healthPositionX, healthPositionY, nameHealth, healthColor);
+        DrawBar(maxHealth, healthPositionX, healthPositionY, nameHealth, healthColor);
 
-        DrawBar(maxMana, currentMana, manaPositionX, manaPositionY, nameMana, manaColor);
+        DrawBar(maxMana, manaPositionX, manaPositionY, nameMana, manaColor);
     }
 
-    private static void DrawBar(int maxResource, int currentResource, int positionX, int positionY, string name, ConsoleColor barColor)
+    private static void DrawBar(int maxResource, int positionX, int positionY, string nameResource, ConsoleColor barColor)
     {
+        int currentResource;
+
+        Console.Write($"Сколько процентов {nameResource} у вас есть: ");
+
+        while(int.TryParse(Console.ReadLine(), out currentResource) == false)
+        {
+            Console.WriteLine("Ошибка! Неверный формат данных. \nВведите число:");
+        }
+
+        currentResource = (currentResource * maxResource) / 100;
+
         Console.SetCursorPosition(positionX, positionY);
 
         Console.Write("[");
@@ -33,19 +42,17 @@ internal class Program
         ConsoleColor defaultColor = Console.BackgroundColor;
         Console.BackgroundColor = barColor;
 
-        for (int i = 0; i < currentResource; i++)
+        for (int i = 0; i < maxResource; i++)
         {
-            Console.Write(' ');
-        }
+            Console.Write(" ");
 
-        Console.BackgroundColor = defaultColor;
-
-        for (int j = currentResource; j < maxResource; j++)
-        {
-            Console.Write(' ');
+            if (i == currentResource)
+            {
+                Console.BackgroundColor = defaultColor;
+            }
         }
 
         Console.Write("]");
-        Console.Write(name);
+        Console.WriteLine(nameResource);
     }
 }
