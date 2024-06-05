@@ -3,56 +3,80 @@ internal class Program
     private static void Main(string[] args)
     {
         int maxHealth = 20;
-        int healthPositionX = 0;
-        int healthPositionY = 1;
+        int maxMana = 20;
+
+        int barPositionX = 0;
+        int barPositionY = 10;
 
         string nameHealth = " HP";
-
-        int maxMana = 20;
-        int manaPositionX = 0;
-        int manaPositionY = 3;
-
         string nameMana = " Mана";
+
+        int currentHealthInPercent = InputCurrentResource(nameHealth);
+        int currentHealth = ConvertPercentToNumber(maxHealth, currentHealthInPercent);
+
+        int currentManaInPercent = InputCurrentResource(nameMana);
+        int currentMana = ConvertPercentToNumber(maxMana, currentManaInPercent);
+
+        int startDrawPosition = 0;
 
         ConsoleColor healthColor = ConsoleColor.Green;
         ConsoleColor manaColor = ConsoleColor.DarkBlue;
 
-        DrawBar(maxHealth, healthPositionX, healthPositionY, nameHealth, healthColor);
+        Console.Clear();
+        Console.SetCursorPosition(barPositionX, barPositionY);
 
-        DrawBar(maxMana, manaPositionX, manaPositionY, nameMana, manaColor);
+        DrawBar(startDrawPosition, currentHealth, maxHealth, nameHealth, healthColor);
+        DrawBar(startDrawPosition, currentMana, maxMana, nameMana, manaColor);
     }
 
-    private static void DrawBar(int maxResource, int positionX, int positionY, string nameResource, ConsoleColor barColor)
+    private static void DrawBar(int startPosition, int currentResourse, int maxResource, string nameResourse, ConsoleColor barColor)
     {
-        int currentResource;
+        Console.Write("[");
+        DrawLine(startPosition, currentResourse, barColor);
+        DrawLine(currentResourse, maxResource);
+        Console.WriteLine($"] {nameResourse}");
+    }
+
+    private static void DrawLine(int startPaintPosition, int endPaintPosition, ConsoleColor backgroundColor)
+    {
+        ConsoleColor defaultColor = Console.BackgroundColor;
+        Console.BackgroundColor = backgroundColor;
+
+        for (int i = startPaintPosition; i < endPaintPosition; i++)
+        {
+            Console.Write(" ");
+        }
+
+        Console.BackgroundColor = defaultColor;
+    }
+
+    private static void DrawLine(int startPaintPosition, int endPaintPosition)
+    {
+        for (int i = startPaintPosition; i < endPaintPosition; i++)
+        {
+            Console.Write(" ");
+        }
+    }
+
+    private static int InputCurrentResource(string nameResource) 
+    {
+        int currentResourceInPercent;
 
         Console.Write($"Сколько процентов {nameResource} у вас есть: ");
 
-        while(int.TryParse(Console.ReadLine(), out currentResource) == false)
+        while (int.TryParse(Console.ReadLine(), out currentResourceInPercent) == false)
         {
             Console.WriteLine("Ошибка! Неверный формат данных. \nВведите число:");
         }
 
-        currentResource = (currentResource * maxResource) / 100;
+        return currentResourceInPercent;
+    }
 
-        Console.SetCursorPosition(positionX, positionY);
+    private static int ConvertPercentToNumber(int maxResource, int currentResourseInPercent)
+    {
+        int percent = 100;
+        int currentRecourse = (maxResource * currentResourseInPercent) / percent;
 
-        Console.Write("[");
-
-        ConsoleColor defaultColor = Console.BackgroundColor;
-        Console.BackgroundColor = barColor;
-
-        for (int i = 0; i < maxResource; i++)
-        {
-            Console.Write(" ");
-
-            if (i == currentResource)
-            {
-                Console.BackgroundColor = defaultColor;
-            }
-        }
-
-        Console.Write("]");
-        Console.WriteLine(nameResource);
+        return currentRecourse;
     }
 }
