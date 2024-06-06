@@ -1,0 +1,32 @@
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        int[] arrayOfNumbers = { 0, 3, 5, 2, 6, 4, 9, 7, 8 };
+
+        Shuffle(arrayOfNumbers);
+
+        Console.Write("[");
+
+        for (int i = 0; i < arrayOfNumbers.Length; i++)
+        {
+            Console.Write(arrayOfNumbers[i] + " ");
+        }
+
+        Console.WriteLine("]");
+    }
+
+    private static void Shuffle(int[] arrayOfNumbers)
+    {
+        Random randomNumber = new Random();
+
+        for (int i = arrayOfNumbers.Length - 1; i >= 0; i--)
+        {
+            int randomIndex = randomNumber.Next(i);
+            int tempNumber = arrayOfNumbers[randomIndex];
+
+            arrayOfNumbers[randomIndex] = arrayOfNumbers[i];
+            arrayOfNumbers[i] = tempNumber;
+        }
+    }
+}
