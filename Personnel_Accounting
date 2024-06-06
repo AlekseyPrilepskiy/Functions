@@ -1,0 +1,171 @@
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        const string CommandToAddDossier = "1";
+        const string CommandToShowAllDossier = "2";
+        const string CommandToDeleteDossier = "3";
+        const string CommandToFindEmployee = "4";
+        const string CommandToExit = "5";
+
+        string[] names = { "Иванов Иван Иваныч", "Андреев Андрей Андреевич", "Алексеев Алексей Алексеевич", "Алексеев Иван Андреевич" };
+        string[] posts = { "Генеральный директор", "СЕО", "Продакт Менеджер", "Тестировщик" };
+
+        bool isProgramWork = true;
+
+        while (isProgramWork)
+        {
+            Console.WriteLine($"{CommandToAddDossier} - Добавить сотрудника в базу данных.");
+            Console.WriteLine($"{CommandToShowAllDossier} - Показать базу сотрудников.");
+            Console.WriteLine($"{CommandToDeleteDossier} - Удалить сотрудника.");
+            Console.WriteLine($"{CommandToFindEmployee} - Найти сотрудника(ов) по фамилии.");
+            Console.WriteLine($"{CommandToExit} - Выход.\n");
+
+            Console.Write("Введите команду: ");
+            string userCommand = Console.ReadLine();
+            Console.WriteLine();
+
+            switch (userCommand)
+            {
+                case CommandToAddDossier:
+                    AddDossier(ref names, ref posts);
+                    break;
+
+                case CommandToShowAllDossier:
+                    ShowAllDossier(names, posts);
+                    break;
+
+                case CommandToDeleteDossier:
+                    DeleteDossier(ref names, ref posts);
+                    break;
+
+                case CommandToFindEmployee:
+                    FindSurname(names, posts);
+                    break;
+
+                case CommandToExit:
+                    isProgramWork = false;
+                    break;
+
+                default:
+                    Console.WriteLine("Неверная команда!");
+                    break;
+            }
+        }
+    }
+
+    private static void AddDossier(ref string[] names, ref string[] posts)
+    {
+        Console.Write("Введите ФИО (полностью) сотрудника: ");
+        string namePerson = Console.ReadLine();
+
+        Console.Write("Введите должность, которую занимает сотрудник: ");
+        string postPerson = Console.ReadLine();
+
+        ExtendArray(ref names, namePerson);
+        ExtendArray(ref posts, postPerson);
+
+        Console.WriteLine("Внесение в базу данных завершено.\n");
+    }
+
+    private static void ShowAllDossier(string[] names, string[] posts)
+    {
+        int sequenceNumber = 0;
+
+        for (int i = 0; i < names.Length; i++)
+        {
+            sequenceNumber++;
+
+            Console.WriteLine($"[{sequenceNumber} - {names[i]} - {posts[i]}]");
+        }
+
+        Console.WriteLine();
+    }
+
+    private static void DeleteDossier(ref string[] names, ref string[] posts)
+    {
+        int dossierIndex;
+        int minIndex = 1;
+        int maxIndex = names.Length;
+
+        Console.Write("Выберите номер сотрудника, для удаления из базы данных: ");
+
+        while (int.TryParse(Console.ReadLine(), out dossierIndex) == false || dossierIndex > maxIndex || dossierIndex < minIndex)
+        {
+            Console.WriteLine("Ошибка! Введите корректный индекс: ");
+        }
+
+        dossierIndex--;
+
+        NarrowArray(ref names, dossierIndex);
+        NarrowArray(ref posts, dossierIndex);
+
+        dossierIndex++;
+
+        Console.WriteLine($"Удаление пользователя под номером {dossierIndex} завершено.\n");
+    }
+
+    private static void FindSurname(string[] names, string[] posts)
+    {
+        int sequenceNumber = 0;
+        int successCounter = 0;
+        int surnameIndex = 0;
+
+        Console.Write("Введите фамилию для поиска в базе данных: ");
+        string surname = Console.ReadLine();
+
+        for (int i = 0; i < names.Length; i++)
+        {
+            sequenceNumber++;
+
+            if (surname.ToUpper() == names[i].Split(" ")[surnameIndex].ToUpper())
+            {
+                successCounter++;
+
+                Console.WriteLine($"[{sequenceNumber} - {names[i]} - {posts[i]}]");
+            }
+        }
+
+        if (successCounter == 0)
+        {
+            Console.WriteLine("Сотрудник с данной фамилией не найден!\n");
+        }
+        else
+        {
+            Console.WriteLine($"По вашему запросу найдено сотрудников: {successCounter}\n");
+        }
+    }
+
+    private static void ExtendArray(ref string[] array, string extendedValue)
+    {
+        int tempArrayLength = array.Length + 1;
+        string[] tempArray = new string[tempArrayLength];
+
+        int tempArrayLastIndex = tempArray.Length - 1;
+
+        for (int i = 0; i < array.Length; i++)
+        {
+            tempArray[i] = array[i];
+        }
+
+        tempArray[tempArrayLastIndex] = extendedValue;
+
+        array = tempArray;
+    }
+
+    private static void NarrowArray(ref string[] array, int index)
+    {
+        int tempArrayLength = array.Length - 1;
+        string[] tempArray = new string[tempArrayLength];
+
+        for (int i = 0, j = 0; i < array.Length; i++)
+        {
+            if (i != index)
+            {
+                tempArray[j++] = array[i];
+            }
+        }
+
+        array = tempArray;
+    }
+}
