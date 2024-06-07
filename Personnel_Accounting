@@ -70,13 +70,9 @@ internal class Program
 
     private static void ShowAllDossier(string[] names, string[] posts)
     {
-        int sequenceNumber = 0;
-
         for (int i = 0; i < names.Length; i++)
         {
-            sequenceNumber++;
-
-            Console.WriteLine($"[{sequenceNumber} - {names[i]} - {posts[i]}]");
+            Console.WriteLine($"[{i + 1} - {names[i]} - {posts[i]}]");
         }
 
         Console.WriteLine();
@@ -84,30 +80,29 @@ internal class Program
 
     private static void DeleteDossier(ref string[] names, ref string[] posts)
     {
-        int dossierIndex;
+        int dossierNumber;
         int minIndex = 1;
         int maxIndex = names.Length;
 
         Console.Write("Выберите номер сотрудника, для удаления из базы данных: ");
 
-        while (int.TryParse(Console.ReadLine(), out dossierIndex) == false || dossierIndex > maxIndex || dossierIndex < minIndex)
+        while (int.TryParse(Console.ReadLine(), out dossierNumber) == false || dossierNumber > maxIndex || dossierNumber < minIndex)
         {
             Console.WriteLine("Ошибка! Введите корректный индекс: ");
         }
 
-        dossierIndex--;
+        dossierNumber--;
 
-        NarrowArray(ref names, dossierIndex);
-        NarrowArray(ref posts, dossierIndex);
+        NarrowArray(ref names, dossierNumber);
+        NarrowArray(ref posts, dossierNumber);
 
-        dossierIndex++;
+        dossierNumber++;
 
-        Console.WriteLine($"Удаление пользователя под номером {dossierIndex} завершено.\n");
+        Console.WriteLine($"Удаление пользователя под номером {dossierNumber} завершено.\n");
     }
 
     private static void FindSurname(string[] names, string[] posts)
     {
-        int sequenceNumber = 0;
         int successCounter = 0;
         int surnameIndex = 0;
 
@@ -116,13 +111,11 @@ internal class Program
 
         for (int i = 0; i < names.Length; i++)
         {
-            sequenceNumber++;
-
             if (surname.ToUpper() == names[i].Split(" ")[surnameIndex].ToUpper())
             {
                 successCounter++;
 
-                Console.WriteLine($"[{sequenceNumber} - {names[i]} - {posts[i]}]");
+                Console.WriteLine($"[{i + 1} - {names[i]} - {posts[i]}]");
             }
         }
 
@@ -138,8 +131,7 @@ internal class Program
 
     private static void ExtendArray(ref string[] array, string extendedValue)
     {
-        int tempArrayLength = array.Length + 1;
-        string[] tempArray = new string[tempArrayLength];
+        string[] tempArray = new string[array.Length + 1];
 
         int tempArrayLastIndex = tempArray.Length - 1;
 
@@ -155,15 +147,16 @@ internal class Program
 
     private static void NarrowArray(ref string[] array, int index)
     {
-        int tempArrayLength = array.Length - 1;
-        string[] tempArray = new string[tempArrayLength];
+        string[] tempArray = new string[array.Length - 1];
 
-        for (int i = 0, j = 0; i < array.Length; i++)
+        for (int i = 0; i < index; i++)
         {
-            if (i != index)
-            {
-                tempArray[j++] = array[i];
-            }
+            tempArray[i] = array[i];
+        }
+
+        for (int i = index + 1; i < array.Length; i++)
+        {
+            tempArray[i - 1] = array[i];
         }
 
         array = tempArray;
