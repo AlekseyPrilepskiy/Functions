@@ -62,8 +62,8 @@ internal class Program
         Console.Write("Введите должность, которую занимает сотрудник: ");
         string postPerson = Console.ReadLine();
 
-        ExtendArray(ref names, namePerson);
-        ExtendArray(ref posts, postPerson);
+        AddData(ref names, namePerson);
+        AddData(ref posts, postPerson);
 
         Console.WriteLine("Внесение в базу данных завершено.\n");
     }
@@ -93,8 +93,8 @@ internal class Program
 
         dossierNumber--;
 
-        NarrowArray(ref names, dossierNumber);
-        NarrowArray(ref posts, dossierNumber);
+        DeleteData(ref names, dossierNumber);
+        DeleteData(ref posts, dossierNumber);
 
         dossierNumber++;
 
@@ -129,7 +129,7 @@ internal class Program
         }
     }
 
-    private static void ExtendArray(ref string[] array, string extendedValue)
+    private static void AddData(ref string[] array, string extendedValue)
     {
         string[] tempArray = new string[array.Length + 1];
 
@@ -145,7 +145,7 @@ internal class Program
         array = tempArray;
     }
 
-    private static void NarrowArray(ref string[] array, int index)
+    private static void DeleteData(ref string[] array, int index)
     {
         string[] tempArray = new string[array.Length - 1];
 
