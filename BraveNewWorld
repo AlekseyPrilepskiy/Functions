@@ -43,7 +43,7 @@ internal class Program
 
             pressedKey = Console.ReadKey();
 
-            MoveHero(pressedKey, ref positionX, ref positionY, ref score, map);
+            CheckMoveHero(pressedKey, ref positionX, ref positionY, ref score, map);
 
             Console.Clear();
         }
