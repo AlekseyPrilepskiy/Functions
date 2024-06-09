@@ -49,7 +49,7 @@ internal class Program
         }
     }
 
-    private static void MoveHero(ConsoleKeyInfo pressedKey, ref int positionX, ref int positionY, ref int score, char[,] map)
+    private static void CheckMoveHero(ConsoleKeyInfo pressedKey, ref int positionX, ref int positionY, ref int score, char[,] map)
     {
         int[] direction = GetDirection(pressedKey);
 
