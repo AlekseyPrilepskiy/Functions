@@ -26,12 +26,6 @@ internal class Program
         char bomb = '*';
         char free = ' ';
 
-        ConsoleKeyInfo pressedKey = new ConsoleKeyInfo();
-        ConsoleKey upArrow = ConsoleKey.UpArrow;
-        ConsoleKey downArrow = ConsoleKey.DownArrow;
-        ConsoleKey leftArrow = ConsoleKey.LeftArrow;
-        ConsoleKey rightArrow = ConsoleKey.RightArrow;
-
         int positionX = 1;
         int positionY = 1;
         int score = 0;
@@ -55,19 +49,17 @@ internal class Program
             Console.SetCursorPosition(map.GetLength(0) + 1, 0);
             Console.WriteLine("Остерегайтесь бомб: *");
 
-            pressedKey = Console.ReadKey();
+            Move(map, wall, ref positionX, ref positionY);
+            InteractWithObjects(positionX, positionY, ref score, ref isAlive, coin, bomb, free, map);
 
             Console.Clear();
-
-            MoveBehaviorHero(pressedKey, upArrow, downArrow, leftArrow, rightArrow, map, wall, coin, bomb, free, ref positionX, ref positionY, ref score, ref isAlive);
         }
     }
 
-    private static void MoveBehaviorHero(ConsoleKeyInfo pressedKey, ConsoleKey upArrow, ConsoleKey downArrow, ConsoleKey leftArrow, ConsoleKey rightArrow,
-        char[,] map, char wall, char coin, char bomb, char free, ref int positionX, ref int positionY, ref int score, ref bool isAlive)
+    private static void Move(char[,] map, char wall, ref int positionX, ref int positionY)
     {
 
-        int[] direction = GetDirection(pressedKey, upArrow, downArrow, leftArrow, rightArrow);
+        int[] direction = GetDirection();
 
         int nextPositionX = positionX + direction[0];
         int nextPositionY = positionY + direction[1];
@@ -78,12 +70,10 @@ internal class Program
         {
             positionX = nextPositionX;
             positionY = nextPositionY;
-
-            CheckCurrentPosition(positionX, positionY, ref score, ref isAlive, coin, bomb, free, map);
         }
     }
 
-    private static void CheckCurrentPosition(int positionX, int positionY, ref int score, ref bool isAlive, char coin, char bomb, char free, char[,] map)
+    private static void InteractWithObjects(int positionX, int positionY, ref int score, ref bool isAlive, char coin, char bomb, char free, char[,] map)
     {
         if (map[positionX, positionY] == coin)
         {
@@ -92,14 +82,24 @@ internal class Program
         }
         else if (map[positionX, positionY] == bomb)
         {
-            Console.WriteLine("Вы наступили на бомбу.\nИгра окончена!");
-
             isAlive = false;
+
+            Console.Clear();
+            Console.WriteLine("Вы наступили на бомбу.\nИгра окончена!");
+            Console.ReadKey();
         }
     }
 
-    private static int[] GetDirection(ConsoleKeyInfo pressedKey, ConsoleKey upArrow, ConsoleKey downArrow, ConsoleKey leftArrow, ConsoleKey rightArrow)
+    private static int[] GetDirection()
     {
+        ConsoleKeyInfo pressedKey = new ConsoleKeyInfo();
+        ConsoleKey upArrow = ConsoleKey.UpArrow;
+        ConsoleKey downArrow = ConsoleKey.DownArrow;
+        ConsoleKey leftArrow = ConsoleKey.LeftArrow;
+        ConsoleKey rightArrow = ConsoleKey.RightArrow;
+
+        pressedKey = Console.ReadKey();
+
         int[] direction = { 0, 0 };
 
         if (pressedKey.Key == upArrow)
