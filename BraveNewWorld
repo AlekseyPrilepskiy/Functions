@@ -21,6 +21,11 @@ internal class Program
             { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' }
         };
 
+        char wall = '#';
+        char coin = '.';
+        char bomb = '*';
+        char free = ' ';
+
         ConsoleKeyInfo pressedKey = new ConsoleKeyInfo();
         ConsoleKey upArrow = ConsoleKey.UpArrow;
         ConsoleKey downArrow = ConsoleKey.DownArrow;
@@ -54,16 +59,13 @@ internal class Program
 
             Console.Clear();
 
-            MoveBehaviorHero(pressedKey, upArrow, downArrow, leftArrow, rightArrow, ref positionX, ref positionY, ref score, ref isAlive, map);
+            MoveBehaviorHero(pressedKey, upArrow, downArrow, leftArrow, rightArrow, map, wall, coin, bomb, free, ref positionX, ref positionY, ref score, ref isAlive);
         }
     }
 
     private static void MoveBehaviorHero(ConsoleKeyInfo pressedKey, ConsoleKey upArrow, ConsoleKey downArrow, ConsoleKey leftArrow, ConsoleKey rightArrow,
-        ref int positionX, ref int positionY, ref int score, ref bool isAlive, char[,] map)
+        char[,] map, char wall, char coin, char bomb, char free, ref int positionX, ref int positionY, ref int score, ref bool isAlive)
     {
-        const char Wall = '#';
-        const char Coin = '.';
-        const char Bomb = '*';
 
         int[] direction = GetDirection(pressedKey, upArrow, downArrow, leftArrow, rightArrow);
 
@@ -72,29 +74,30 @@ internal class Program
 
         char nextCell = map[nextPositionX, nextPositionY];
 
-        switch (nextCell)
+        if (nextCell != wall)
         {
-            case Wall:
-                break;
+            positionX = nextPositionX;
+            positionY = nextPositionY;
 
-            case Bomb:
-                Console.WriteLine("Вы взорвались!");
-
-                isAlive = false;
-                break;
-
-            default:
-                if (nextCell == Coin) 
-                {
-                    score++;
-                    map[nextPositionX, nextPositionY] = ' ';
-                }
-
-                positionX = nextPositionX;
-                positionY = nextPositionY;
-                break;
+            CheckCurrentPosition(positionX, positionY, ref score, ref isAlive, coin, bomb, free, map);
         }
     }
+
+    private static void CheckCurrentPosition(int positionX, int positionY, ref int score, ref bool isAlive, char coin, char bomb, char free, char[,] map)
+    {
+        if (map[positionX, positionY] == coin)
+        {
+            score++;
+            map[positionX, positionY] = free;
+        }
+        else if (map[positionX, positionY] == bomb)
+        {
+            Console.WriteLine("Вы наступили на бомбу.\nИгра окончена!");
+
+            isAlive = false;
+        }
+    }
+
     private static int[] GetDirection(ConsoleKeyInfo pressedKey, ConsoleKey upArrow, ConsoleKey downArrow, ConsoleKey leftArrow, ConsoleKey rightArrow)
     {
         int[] direction = { 0, 0 };
